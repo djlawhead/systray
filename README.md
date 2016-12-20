@@ -1,3 +1,16 @@
+This is a fork of the systray sources from
+https://github.com/getlantern/systray
+
+Fork was created in order to make modifications such that Mac OS code does not inhibit other
+Mac-specific logic from working. In previous implementation, AppDelegate was both declared
+and defined in implementation file, making categories difficult. Logic requiring access 
+to earliest Application Delegate lifecycle could not be implemented. 
+
+This fork aims to change that. Below are the original contents of the readme as written
+by the original author.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 Package systray is a cross platfrom Go library to place an icon and menu in the notification area.
 Tested on Windows 8, Mac OSX, Ubuntu 14.10 and Debian 7.6.
 
@@ -53,5 +66,6 @@ go run main.go
 
 ## Credits
 
+- https://github.com/getlantern/systray
 - https://github.com/xilp/systray
 - https://github.com/cratonica/trayhost
