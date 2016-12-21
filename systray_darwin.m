@@ -49,6 +49,7 @@
 }
 
 @synthesize window = _window;
+@synthesize initBlock = _initBlock;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -56,8 +57,8 @@
   self->menu = [[NSMenu alloc] init];
   [self->menu setAutoenablesItems: FALSE];
   [self->statusItem setMenu:self->menu];
-  if (self->initBlock != NULL)
-    self->initBlock();
+  if (self.initBlock != NULL)
+    self.initBlock();
   systray_ready();
 }
 
