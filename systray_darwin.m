@@ -1,46 +1,26 @@
-#import <Cocoa/Cocoa.h>
+//+build darwin
+#include "systray_darwin.h"
 #include "systray.h"
 
-@interface MenuItem : NSObject
-{
-  @public
-    NSNumber* menuId;
-    NSString* title;
-    NSString* tooltip;
-    short disabled;
-    short checked;
-}
--(id) initWithId: (int)theMenuId
-       withTitle: (const char*)theTitle
-     withTooltip: (const char*)theTooltip
-    withDisabled: (short)theDisabled
-     withChecked: (short)theChecked;
-     @end
-     @implementation MenuItem
-     -(id) initWithId: (int)theMenuId
-            withTitle: (const char*)theTitle
-          withTooltip: (const char*)theTooltip
-         withDisabled: (short)theDisabled
-          withChecked: (short)theChecked
-{
-  menuId = [NSNumber numberWithInt:theMenuId];
-  title = [[NSString alloc] initWithCString:theTitle
-                                   encoding:NSUTF8StringEncoding];
-  tooltip = [[NSString alloc] initWithCString:theTooltip
+@implementation MenuItem 
+  -(id) initWithId: (int)theMenuId
+        withTitle: (const char*)theTitle
+      withTooltip: (const char*)theTooltip
+     withDisabled: (short)theDisabled
+      withChecked: (short)theChecked
+  {
+    menuId = [NSNumber numberWithInt:theMenuId];
+    title = [[NSString alloc] initWithCString:theTitle
                                      encoding:NSUTF8StringEncoding];
-  disabled = theDisabled;
-  checked = theChecked;
-  return self;
-}
+    tooltip = [[NSString alloc] initWithCString:theTooltip
+                                       encoding:NSUTF8StringEncoding];
+    disabled = theDisabled;
+    checked = theChecked;
+    return self;
+  }
 @end
 
-@interface AppDelegate: NSObject <NSApplicationDelegate>
-  - (void) add_or_update_menu_item:(MenuItem*) item;
-  - (IBAction)menuHandler:(id)sender;
-  @property (assign) IBOutlet NSWindow *window;
-  @end
-
-  @implementation AppDelegate
+@implementation AppDelegate
 {
   NSStatusItem *statusItem;
   NSMenu *menu;
