@@ -11,6 +11,7 @@ import (
 	"sync/atomic"
 
 	"github.com/getlantern/golog"
+	"github.com/djlawhead/gobridgecocoa"
 )
 
 // MenuItem is used to keep track each menu item of systray
@@ -47,12 +48,18 @@ var (
 // It blocks until systray.Quit() is called.
 // Should be called at the very beginning of main() to lock at main thread.
 func Run(onReady func()) {
+	// This breaks functionality on Linux builds
+	// but since our internal project doesn't need
+	// Linux yet I will leave as-is until I have 
+	// more time to allocate to this ~ djl
+	gobridgecocoa.AddCallback(onReady)
+/*
 	runtime.LockOSThread()
 	go func() {
 		<-readyCh
 		onReady()
 	}()
-
+*/
 	nativeLoop()
 }
 

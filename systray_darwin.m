@@ -115,17 +115,14 @@
 @end
 
 int nativeLoop(void) {
-  AppDelegate *delegate = [[AppDelegate alloc] init];
-  [[NSApplication sharedApplication] setDelegate:delegate];
-  [NSApp run];
-  return EXIT_SUCCESS;
+// Do nothing. Handled by gobridgecocoa
 }
 
 void runInMainThread(SEL method, id object) {
   [(AppDelegate*)[NSApp delegate]
     performSelectorOnMainThread:method
                      withObject:object
-                  waitUntilDone: YES];
+                   waitUntilDone: YES];
 }
 
 void setIcon(const char* iconBytes, int length) {
