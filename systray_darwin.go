@@ -16,6 +16,9 @@ import (
 )
 
 func nativeLoop() {
+	gobridgecocoa.AddCallback(func() {
+		C.nativeLoop()
+	})
 	gococoaurlscheme.Setup()
 	gobridgecocoa.Run()
 	systrayReady()

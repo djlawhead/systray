@@ -37,6 +37,7 @@
 @interface StatusBarManager: NSObject
   - (void) add_or_update_menu_item:(MenuItem*) item;
   - (IBAction)menuHandler:(id)sender;
+  - (void)setup;
   + (id)sharedManager;
 @end
 
@@ -52,20 +53,18 @@
   static StatusBarManager *sharedManager = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    sharedManager = [[self alloc] init];
+    sharedManager = [[StatusBarManager alloc] init];
   });
   return sharedManager;
 }
 
-- (id)init
+- (void)setup
 {
   self->statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
   self->menu = [[NSMenu alloc] init];
   [self->menu setAutoenablesItems: FALSE];
   [self->statusItem setMenu:self->menu];
   systray_ready();
-
-  return [super init];
 }
 
 - (void)setIcon:(NSImage *)image {
@@ -121,7 +120,7 @@
 @end
 
 int nativeLoop(void) {
-  // Do nothing. Handled by gobridgecocoa
+  [[StatusBarManager sharedManager] setup];
   return 0;
 }
 
