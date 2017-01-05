@@ -13,19 +13,25 @@ import (
 	"github.com/djlawhead/gobridgecocoa"
 	"github.com/djlawhead/gococoaurlscheme"
 	"unsafe"
+	"fmt"
 )
 
 func nativeLoop() {
+	fmt.Println("systray_darwin.go: nativeLoop() called. Setting up bridge.")
 	gobridgecocoa.AddCallback(func() {
+		fmt.Println("systray init callback called")
 		C.nativeLoop()
+		systray_ready()
 	})
 	gococoaurlscheme.Setup()
 	gobridgecocoa.Run()
-	systrayReady()
 }
 
 func quit() {
-	C.quit()
+	gobridgecocoa.AddShutdownCallback(func() {
+		C.quit()
+	})
+	gobridgecocoa.Quit()
 }
 
 // SetIcon sets the systray icon.

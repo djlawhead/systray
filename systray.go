@@ -6,9 +6,10 @@ Methods can be called from any goroutine except Run(), which should be called at
 package systray
 
 import (
-	"runtime"
 	"sync"
 	"sync/atomic"
+	"runtime"
+	"fmt"
 
 	"github.com/getlantern/golog"
 )
@@ -48,7 +49,8 @@ var (
 // Should be called at the very beginning of main() to lock at main thread.
 func Run(onReady func()) {
 	runtime.LockOSThread()
-	go func() {
+	
+	go func () { 
 		<-readyCh
 		onReady()
 	}()
@@ -128,6 +130,7 @@ func (item *MenuItem) update() {
 }
 
 func systrayReady() {
+	fmt.Println("systray.go: systrayReady() called")
 	readyCh <- nil
 }
 

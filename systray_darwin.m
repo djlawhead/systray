@@ -37,7 +37,6 @@
 @interface StatusBarManager: NSObject
   - (void) add_or_update_menu_item:(MenuItem*) item;
   - (IBAction)menuHandler:(id)sender;
-  - (void)setup;
   + (id)sharedManager;
 @end
 
@@ -53,18 +52,21 @@
   static StatusBarManager *sharedManager = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
+    NSLog(@"[StatusBarManager sharedManager] setting up for first time");
     sharedManager = [[StatusBarManager alloc] init];
   });
   return sharedManager;
 }
 
-- (void)setup
+- (id)init
 {
+  NSLog(@"[StatusBarManager init] called");
   self->statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
   self->menu = [[NSMenu alloc] init];
   [self->menu setAutoenablesItems: FALSE];
   [self->statusItem setMenu:self->menu];
-  systray_ready();
+
+  return [super init];
 }
 
 - (void)setIcon:(NSImage *)image {
@@ -87,6 +89,7 @@
 
 - (void) add_or_update_menu_item:(MenuItem*) item
 {
+  NSLog(@"[StatusBarManager add_or_update_menu_item:] called");
   NSMenuItem* menuItem;
   int existedMenuIndex = [menu indexOfItemWithRepresentedObject: item->menuId];
   if (existedMenuIndex == -1) {
@@ -119,8 +122,7 @@
 
 @end
 
-int nativeLoop(void) {
-  [[StatusBarManager sharedManager] setup];
+int nativeLoop(void) { 
   return 0;
 }
 
