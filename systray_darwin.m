@@ -34,32 +34,38 @@
 }
 @end
 
-@interface AppDelegate: NSObject <NSApplicationDelegate>
+@interface StatusBarManager: NSObject
   - (void) add_or_update_menu_item:(MenuItem*) item;
   - (IBAction)menuHandler:(id)sender;
-  @property (assign) IBOutlet NSWindow *window;
-  @property (copy) void (^initBlock)(void);
+  + (id)sharedManager;
 @end
 
-@implementation AppDelegate
+@implementation StatusBarManager
 {
   NSStatusItem *statusItem;
   NSMenu *menu;
   NSCondition* cond;
 }
 
-@synthesize window = _window;
-@synthesize initBlock = _initBlock;
++ (id)sharedManager 
+{
+  static StatusBarManager *sharedManager = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    sharedManager = [[self alloc] init];
+  });
+  return sharedManager;
+}
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (id)init
 {
   self->statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
   self->menu = [[NSMenu alloc] init];
   [self->menu setAutoenablesItems: FALSE];
   [self->statusItem setMenu:self->menu];
-  if (self.initBlock != NULL)
-    self.initBlock();
   systray_ready();
+
+  return [super init];
 }
 
 - (void)setIcon:(NSImage *)image {
@@ -115,11 +121,12 @@
 @end
 
 int nativeLoop(void) {
-// Do nothing. Handled by gobridgecocoa
+  // Do nothing. Handled by gobridgecocoa
+  return 0;
 }
 
 void runInMainThread(SEL method, id object) {
-  [(AppDelegate*)[NSApp delegate]
+  [[StatusBarManager sharedManager]
     performSelectorOnMainThread:method
                      withObject:object
                    waitUntilDone: YES];

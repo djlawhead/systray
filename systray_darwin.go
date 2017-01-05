@@ -1,20 +1,24 @@
-// +build !windows,!darwin
-
+//+build darwin,!linux,!windows
 package systray
 
 /*
-#cgo linux pkg-config: gtk+-3.0 appindicator3-0.1
+#cgo darwin CFLAGS: -DDARWIN -x objective-c -fobjc-arc
+#cgo darwin LDFLAGS: -framework Cocoa
 
 #include "systray.h"
 */
 import "C"
 
 import (
+	"github.com/djlawhead/gobridgecocoa"
+	"github.com/djlawhead/gococoaurlscheme"
 	"unsafe"
 )
 
 func nativeLoop() {
-	C.nativeLoop()
+	gococoaurlscheme.Setup()
+	gobridgecocoa.Run()
+	systrayReady()
 }
 
 func quit() {
