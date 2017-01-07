@@ -52,7 +52,6 @@
   static StatusBarManager *sharedManager = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSLog(@"[StatusBarManager sharedManager] setting up for first time");
     sharedManager = [[StatusBarManager alloc] init];
   });
   return sharedManager;
@@ -60,7 +59,6 @@
 
 - (id)init
 {
-  NSLog(@"[StatusBarManager init] called");
   self->statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
   self->menu = [[NSMenu alloc] init];
   [self->menu setAutoenablesItems: FALSE];
@@ -89,7 +87,6 @@
 
 - (void) add_or_update_menu_item:(MenuItem*) item
 {
-  NSLog(@"[StatusBarManager add_or_update_menu_item:] called");
   NSMenuItem* menuItem;
   int existedMenuIndex = [menu indexOfItemWithRepresentedObject: item->menuId];
   if (existedMenuIndex == -1) {
