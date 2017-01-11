@@ -9,7 +9,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"runtime"
-	"fmt"
 
 	"github.com/getlantern/golog"
 )
@@ -130,7 +129,6 @@ func (item *MenuItem) update() {
 }
 
 func systrayReady() {
-	fmt.Println("systray.go: systrayReady() called")
 	readyCh <- nil
 }
 
