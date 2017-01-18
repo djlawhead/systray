@@ -2,8 +2,8 @@
 package systray
 
 /*
-#cgo darwin CFLAGS: -DDARWIN -x objective-c -fobjc-arc -mmacosx-version-min=10.9
-#cgo darwin LDFLAGS: -weak_framework Cocoa
+#cgo darwin CFLAGS: -DDARWIN -x objective-c -fobjc-arC
+#cgo darwin LDFLAGS: -framework Cocoa
 
 #include "systray.h"
 */
