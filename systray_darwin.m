@@ -69,6 +69,7 @@
 
 - (void)setIcon:(NSImage *)image {
   [statusItem setImage:image];
+  [statusItem.button setImage:image];
 }
 
 - (void)setTitle:(NSString *)title {
