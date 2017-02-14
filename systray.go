@@ -8,7 +8,6 @@ package systray
 import (
 	"sync"
 	"sync/atomic"
-	"runtime"
 
 	"github.com/getlantern/golog"
 )
@@ -47,7 +46,7 @@ var (
 // It blocks until systray.Quit() is called.
 // Should be called at the very beginning of main() to lock at main thread.
 func Run(onReady func()) {
-	runtime.LockOSThread()
+	//runtime.LockOSThread()
 	
 	go func () { 
 		<-readyCh
